@@ -1,0 +1,68 @@
+.simple-select-js-container,
+.simple-select-js-label,
+.simple-select-js-options,
+.simple-select-js-option {
+    box-sizing: border-box;
+}
+
+.simple-select-js-container {
+    display: inline-block;
+    position: relative;
+}
+
+.simple-select-js-label {
+    align-items: center;
+    border: 1px solid #000000;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: .25rem .5rem;
+    user-select: none;
+    width: 200px;
+}
+
+.simple-select-js-container:focus > .simple-select-js-label {
+    border-width: 2px;
+    outline: none;
+}
+
+.simple-select-js-label::after {
+    border: 4px solid transparent;
+    border-top-color: #000000;
+    content: '';
+    display: inline-block;
+    margin-left: 12px;
+    margin-top: 4px;
+}
+
+.simple-select-js-options {
+    border: 2px solid #000;
+    border-top: none; 
+    display: none;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: scroll;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.simple-select-js-options.active {
+    display: block;
+}
+
+.simple-select-js-option {
+    cursor: pointer;
+    padding: .25rem .5rem;
+    user-select: none;
+}
+
+.simple-select-js-option:hover {
+    background-color: #1e90ff;
+    color: #ffffff;
+}
+
+.simple-select-js-option.selected {
+    background-color: #1e90ff;
+    color: #ffffff;
+}
