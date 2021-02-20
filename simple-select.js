@@ -17,6 +17,9 @@ export default class simpleSelect {
         return this.options.find(option => option.selected);
     }
 
+    get selectedOptionIndex() {
+        return this.options.indexOf(this.selectedOption);
+    }
     
     selectValue(value) {
         const newSelectedOption = this.options.find(option => {
@@ -30,6 +33,11 @@ export default class simpleSelect {
         newSelectedOption.element.selected = true;
 
         this.simpleSelectJsLabel.innerText = newSelectedOption.label;
+
+        this.simpleSelectJsOptions.querySelector(`[data-value='${prevSelectedOption.value}']`).classList.remove('selected');
+        const simpleSelectJsNewOption = this.simpleSelectJsOptions.querySelector(`[data-value='${newSelectedOption.value}']`);
+        simpleSelectJsNewOption.classList.add('selected');
+        simpleSelectJsNewOption.scrollIntoView({ block: 'nearest' });
     }
 }
 
@@ -48,9 +56,7 @@ function setupCustomElement(select) {
         simpleSelectJsOption.innerText = option.label;
         simpleSelectJsOption.dataset.value = option.value;
         simpleSelectJsOption.addEventListener('click', () => {
-            select.simpleSelectJsOptions.querySelector(`[data-value='${select.selectedOption.value}']`).classList.remove('selected')
             select.selectValue(option.value);
-            simpleSelectJsOption.classList.add('selected');
             select.simpleSelectJsOptions.classList.remove('active');
         })
         select.simpleSelectJsOptions.append(simpleSelectJsOption);
@@ -65,6 +71,44 @@ function setupCustomElement(select) {
 
     select.simpleSelectJsElement.addEventListener('blur', () => {
         select.simpleSelectJsOptions.classList.remove('active');
+    });
+
+    let debounceTimeout;
+    let searchPhrase = "";
+
+    select.simpleSelectJsElement.addEventListener('keydown', e => {
+        switch (e.code) {
+            case 'Space':
+                select.simpleSelectJsOptions.classList.toggle('active');
+                break;
+            case 'ArrowUp':
+                const prevOption = select.options[select.selectedOptionIndex - 1];
+                if (prevOption) {
+                    select.selectValue(prevOption.value);
+                }
+                break;
+            case 'ArrowDown':
+                const nextOption = select.options[select.selectedOptionIndex + 1];
+                if(nextOption) {
+                    select.selectValue(nextOption.value);
+                }
+                break;
+            case 'Enter':
+                case 'Escape':
+                    select.simpleSelectJsOptions.classList.remove('active');
+                    break;
+            default:
+                clearTimeout(debounceTimeout);
+                searchPhrase += e.key;
+                debounceTimeout = setTimeout(() => {
+                    searchPhrase = ""
+                }, 500)
+
+                const searchResult = select.options.find(option => {
+                    return option.label.toLowerCase().startsWith(searchPhrase);
+                });
+                if (searchResult) select.selectValue(searchResult.value);
+        }
     });
 }
 
