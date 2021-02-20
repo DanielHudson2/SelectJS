@@ -11,15 +11,15 @@ export default class simpleSelect {
 
         element.style.display = 'none';
         element.after(this.simpleSelectJsElement);
-    }
+    };
 
     get selectedOption() {
         return this.options.find(option => option.selected);
-    }
+    };
 
     get selectedOptionIndex() {
         return this.options.indexOf(this.selectedOption);
-    }
+    };
     
     selectValue(value) {
         const newSelectedOption = this.options.find(option => {
@@ -38,14 +38,14 @@ export default class simpleSelect {
         const simpleSelectJsNewOption = this.simpleSelectJsOptions.querySelector(`[data-value='${newSelectedOption.value}']`);
         simpleSelectJsNewOption.classList.add('selected');
         simpleSelectJsNewOption.scrollIntoView({ block: 'nearest' });
-    }
-}
+    };
+};
 
 function setupCustomElement(select) {
-    select.simpleSelectJsElement.classList.add('simple-select-js-container')
+    select.simpleSelectJsElement.classList.add('simple-select-js-container');
     select.simpleSelectJsElement.tabIndex = 0;
-    select.simpleSelectJsLabel.classList.add('simple-select-js-label')
-    select.simpleSelectJsOptions.classList.add('simple-select-js-options')
+    select.simpleSelectJsLabel.classList.add('simple-select-js-label');
+    select.simpleSelectJsOptions.classList.add('simple-select-js-options');
 
     select.simpleSelectJsLabel.innerText = select.selectedOption.label;
 
@@ -58,12 +58,12 @@ function setupCustomElement(select) {
         simpleSelectJsOption.addEventListener('click', () => {
             select.selectValue(option.value);
             select.simpleSelectJsOptions.classList.remove('active');
-        })
+        });
         select.simpleSelectJsOptions.append(simpleSelectJsOption);
     });
 
-    select.simpleSelectJsElement.append(select.simpleSelectJsLabel)
-    select.simpleSelectJsElement.append(select.simpleSelectJsOptions)
+    select.simpleSelectJsElement.append(select.simpleSelectJsLabel);
+    select.simpleSelectJsElement.append(select.simpleSelectJsOptions);
 
     select.simpleSelectJsLabel.addEventListener('click', () => {
         select.simpleSelectJsOptions.classList.toggle('active');
@@ -103,19 +103,19 @@ function setupCustomElement(select) {
                 clearTimeout(debounceTimeout);
                 searchPhrase += e.key;
                 debounceTimeout = setTimeout(() => {
-                    searchPhrase = ""
-                }, 500)
+                    searchPhrase = "";
+                }, 500);
 
                 const searchResult = select.options.find(option => {
                     return option.label.toLowerCase().startsWith(searchPhrase);
                 });
                 if (searchResult) {
                     select.selectValue(searchResult.value);
-                }
-            }
-        }
+                };
+            };
+        };
     });
-}
+};
 
 function formatOptions(optionElements) {
     return [...optionElements].map(optionElement => {
@@ -124,6 +124,6 @@ function formatOptions(optionElements) {
             label: optionElement.label,
             selected: optionElement.selected,
             element: optionElement
-        }
-    })
-}
+        };
+    });
+};
