@@ -81,23 +81,25 @@ function setupCustomElement(select) {
             case 'Space':
                 select.simpleSelectJsOptions.classList.toggle('active');
                 break;
-            case 'ArrowUp':
+            case 'ArrowUp': {
                 const prevOption = select.options[select.selectedOptionIndex - 1];
                 if (prevOption) {
                     select.selectValue(prevOption.value);
                 }
                 break;
-            case 'ArrowDown':
+            }
+            case 'ArrowDown': {
                 const nextOption = select.options[select.selectedOptionIndex + 1];
                 if(nextOption) {
                     select.selectValue(nextOption.value);
                 }
                 break;
+            }
             case 'Enter':
                 case 'Escape':
                     select.simpleSelectJsOptions.classList.remove('active');
                     break;
-            default:
+            default: {
                 clearTimeout(debounceTimeout);
                 searchPhrase += e.key;
                 debounceTimeout = setTimeout(() => {
@@ -107,7 +109,10 @@ function setupCustomElement(select) {
                 const searchResult = select.options.find(option => {
                     return option.label.toLowerCase().startsWith(searchPhrase);
                 });
-                if (searchResult) select.selectValue(searchResult.value);
+                if (searchResult) {
+                    select.selectValue(searchResult.value);
+                }
+            }
         }
     });
 }
